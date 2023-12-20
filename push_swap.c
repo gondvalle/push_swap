@@ -248,9 +248,70 @@ void rrr(int *a, int *b, size_t *size_a, size_t *size_b)
 	printf("rrr\n");
 }
 
-void	algorit(int *a, int *b, size_t *size_a, size_t *size_b)
+int	*idx(i, j)
 {
-	w
+	int	*num;
+
+	num = calloc(2, sizeof(int));
+	if (!num)
+		return (NULL);
+	num[0] = i;
+	num[1] = j;
+	return (num);
+}
+
+int	*start(int *a, int *b, size_t *size_a, size_t *size_b)
+{
+	int	move;
+	int	i;
+	int	j;
+	int	c;
+	int	d;
+
+	i = 0;
+	move = -1;
+	while (i < *size_a && (move < 0 || i < move))
+	{
+		c = i;
+		j = 0;
+		while (j < *size_b && (move < 0 || i + j < move))
+		{
+			d = j + 1;
+			if (j == *size_b || (b[j] > b[j + 1] && (a[i] > b[j] || a[i] < b[j + 1]))
+					|| (b[j] < a[i] && a[i] < b[j + 1]))
+				move = c + d;
+			j++;
+		}
+		i++;
+	}
+	return (idx(c, d));
+}
+
+int	*finish(int *a, int *b, size_t *size_a, size_t *size_b)
+{
+	int	move;
+	int	i;
+	int	j;
+	int	c;
+	int	d;
+
+	i = *size_a;
+	move = -1;
+	while (0 < i && (move < 0 || i < move))
+	{
+		c = i;
+		j = *size_b;
+		while (0 < j && (move < 0 || i + j < move))
+		{
+			d = j;
+			if (j == 0 || (b[j] < b[j - 1] && (a[i] < b[j] || a[i] > b[j - 1]))
+					|| (b[j] > a[i] && a[i] > b[j - 1]))
+				move = c + d;
+			j--;
+		}
+		i--;
+	}
+	return (idx(c, d));
 }
 
 int main(int argn, char **argv)
@@ -259,6 +320,8 @@ int main(int argn, char **argv)
 	int *b;
 	size_t size_a;
 	size_t size_b;
+	int	*num1;
+	int	*num2;
 
 	a = arraytoint(argn, argv);
 	if (!a)
@@ -270,13 +333,6 @@ int main(int argn, char **argv)
 	size_b = 0;
 	pb(a, b, &size_a, &size_b);
 	pb(a, b, &size_a, &size_b);
-	pb(a, b, &size_a, &size_b);
-	pb(a, b, &size_a, &size_b);
-	pa(a, b, &size_a, &size_b);
-	rr(a, b, &size_a, &size_b);
-	rrr(a, b, &size_a, &size_b);
-	rrb(a, &size_a);
-	//rb(b, &size_b);
 	printf("a: ");
 	for (unsigned int j = 0; j < size_a; ++j) {
         printf("%d ", a[j]);
@@ -286,8 +342,20 @@ int main(int argn, char **argv)
         printf("%d ", b[j]);
 		}
 	printf("\n");
+	num1 = start(a, b, &size_a, &size_b);
+	num2 = finish(a, b, &size_a, &size_b);
+	printf("start:\n");
+	for (unsigned int j = 0; j < 2; ++j) {
+        printf("%d ", num1[j]);
+		}
+	printf("\nfinish:\n");
+	for (unsigned int j = 0; j < 2; ++j) {
+        printf("%d ", num2[j]);
+		}
 	free(a);
 	free(b);
+	free(num1);
+	free(num2);
 
 	return(0);
 }
