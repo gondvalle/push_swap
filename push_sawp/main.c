@@ -122,6 +122,49 @@ int	*finish(int *a, int *b, size_t *size_a, size_t *size_b)
 	return (idx(c, *size_b - d));
 }
 
+int	*finish2(int *a, int *b, size_t *size_a, size_t *size_b)
+{
+	size_t	i;
+	size_t	j;
+	size_t	c;
+	size_t	d;
+
+	i = 0;
+	c = 0;
+	d = 0;
+	while (i < *size_a)
+	{
+		j = 0;
+		if (a[i] > b[0]) 
+			j = middle2(b, size_b) + 1;
+		while (j < *size_b)
+		{	
+			if (a[i] > b[j] && ((int)i - (int)j) < (int)c - (int)d)
+			{
+				d = j;
+				c = i;
+			}
+			if (a[i] > b[j])
+				break ;
+			j++;
+		}
+		if (a[i] < b[middle2(b, size_b)] && (middle2(b, size_b) < d || c == 0))
+		{
+			c = i;
+			d = middle2(b, size_b);
+			if (d == 0)
+			    d = 1;
+			else if (d == *size_b - 1)
+				d = 0;
+			break ;
+		}
+		i++;
+	}
+	printf("\nc:%zu ", c);
+	printf("\nsize:%lu \n", *size_b - d);
+	return (idx(c, *size_b - d));
+}
+
 void	test(int *a, int *b, size_t *size_a, size_t *size_b)
 {
 	int	*num;
