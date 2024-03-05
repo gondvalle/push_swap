@@ -214,6 +214,55 @@ void	test2(int *a, int *b, size_t *size_a, size_t *size_b)
 	}
 }
 
+void	test3(int *a, int *b, size_t *size_a, size_t *size_b)
+{
+	int	*numS;
+	int	*numF;
+
+	while (*size_a > 0)
+	{
+		numS = start2(a, b, size_a, size_b);
+		numF = finish2(a, b, size_a, size_b);
+		if (numF[0] + numF[1] < numS[0] + numS[1])
+		{
+			while (numF[0]-- > 0)
+				ra(a, size_a);
+			while (numF[1]-- > 0)
+				rrb(b, size_b);
+		}
+		else
+		{
+			while (numS[0] > 0 && numS[1] > 0)
+			{
+				rr(a, b, size_a, size_b);
+				numS[0]--;
+				numS[1]--;
+			}
+			while (numS[0]--  > 0)
+				ra(a, size_a);
+			while (numS[1]-- > 0)
+				rb(b, size_b);
+		}
+		pb(a, b, size_a, size_b);
+		free(numS);
+		free(numF);
+	}
+}
+
+void    last(int *a, int *b, size_t *size_a, size_t *size_b)
+{
+	int     fer;
+	
+    fer = middle2(b, size_b) + 1;
+	while(fer > 0)
+	{
+	    rb(b, size_b);
+	    fer--;
+	}
+	while(*size_b > 0)
+	    pa(a, b, size_a, size_b);
+}
+
 int	main(int argn, char **argv)
 {
 	int		*a;
@@ -229,10 +278,16 @@ int	main(int argn, char **argv)
 	if (!b)
 		return (0);
 	size_b = 0;
+	for (unsigned int j = 0; j < size_a; ++j) 
+        printf("%d ", a[j]);
+	printf("\nb: ");
+	for (unsigned int j = 0; j < size_b; ++j)
+        printf("%d ", b[j]);
 	pb(a, b, &size_a, &size_b);
 	pb(a, b, &size_a, &size_b);
-	test2(a, b, &size_a, &size_b);
-	printf("a: ");
+	test3(a, b, &size_a, &size_b);
+	last(a, b, &size_a, &size_b);
+	printf("\na: ");
 	for (unsigned int j = 0; j < size_a; ++j) 
         printf("%d ", a[j]);
 	printf("\nb: ");
