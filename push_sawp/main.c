@@ -263,6 +263,30 @@ void    last(int *a, int *b, size_t *size_a, size_t *size_b)
 	    pa(a, b, size_a, size_b);
 }
 
+int *stack(int argn, char **argv)
+{
+    char    **arg;
+    int     *stack;
+    
+    if (argn == 1)
+    {
+        arg = ft_split(argv[1], ' ');
+        printf("\narg: ");
+        for (int i = 0; arg[i] != NULL; i++) {
+            printf("%s ", arg[i]);
+        if (!arg)
+            return (NULL);
+        stack = arraytoint(argn, arg);
+        }
+    }
+    else
+        stack = arraytoint(argn, argv);
+    
+    free(arg);
+    
+    return stack;
+}
+
 int	main(int argn, char **argv)
 {
 	int		*a;
@@ -270,7 +294,7 @@ int	main(int argn, char **argv)
 	size_t	size_a;
 	size_t	size_b;
 
-	a = arraytoint(argn, argv);
+	a = stack(argn, argv);
 	if (!a)
 		return (0);
 	size_a = argn - 1;
